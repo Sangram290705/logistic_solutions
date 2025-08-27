@@ -1,0 +1,1 @@
+export DB_DSN="postgres://<username>:<password>@localhost/truckload_optimizer?sslmode=disable"
