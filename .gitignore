@@ -4,3 +4,4 @@ bin/
 # Files
 .DS_Store
 .envrc
+.env
