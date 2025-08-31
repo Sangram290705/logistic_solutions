@@ -1,13 +1,113 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>truck Optimiser</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruckLoad Optimizer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Hero Section -->
+  <header class="bg-blue-700 text-white p-8 text-center">
+    <h1 class="text-4xl font-bold mb-4">TruckLoad Optimizer</h1>
+    <p class="text-lg">Connecting truck drivers with shippers in real-time to cut empty runs and optimize logistics.</p>
+    <button onclick="openSignup()" class="mt-6 px-6 py-3 bg-yellow-400 text-black font-semibold rounded-lg shadow hover:bg-yellow-300">Get Early Access</button>
+  </header>
+
+  <!-- Features -->
+  <section class="p-8 grid md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="font-bold text-xl mb-2">Real-time Matching</h2>
+      <p>Connect drivers and shippers instantly to reduce empty returns.</p>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="font-bold text-xl mb-2">Route Optimization</h2>
+      <p>AI + Maps to cut costs and fuel use by suggesting the best routes.</p>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="font-bold text-xl mb-2">Multimodal Options</h2>
+      <p>Suggest road + rail for smarter and cheaper deliveries.</p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="p-8 bg-gray-100">
+    <h2 class="text-2xl font-bold text-center mb-6">How It Works</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold">1. Post Load</h3>
+        <p>Shippers post cargo details, routes, and timeline.</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold">2. Match Driver</h3>
+        <p>Drivers nearby get recommendations with cost estimates.</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold">3. Optimize Delivery</h3>
+        <p>System suggests optimized or multimodal routes for efficiency.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculator Demo -->
+  <section class="p-8">
+    <h2 class="text-2xl font-bold text-center mb-6">Savings Calculator</h2>
+    <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow">
+      <label class="block mb-2 font-medium">Distance (km)</label>
+      <input id="distance" type="number" class="w-full p-2 border rounded mb-4" placeholder="Enter distance" />
+      <label class="block mb-2 font-medium">Cost per km</label>
+      <input id="cost" type="number" class="w-full p-2 border rounded mb-4" placeholder="Enter cost/km" />
+      <button onclick="calculate()" class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">Calculate</button>
+      <canvas id="savingsChart" class="mt-6"></canvas>
+    </div>
+  </section>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full">
+      <h2 class="text-xl font-bold mb-4">Join Early Access</h2>
+      <input id="email" type="email" placeholder="Enter your email" class="w-full p-2 border rounded mb-4" />
+      <button onclick="submitSignup()" class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">Submit</button>
+      <button onclick="closeSignup()" class="mt-2 w-full py-2 bg-gray-300 rounded-lg">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    let chart;
+    function calculate() {
+      const distance = parseFloat(document.getElementById('distance').value) || 0;
+      const cost = parseFloat(document.getElementById('cost').value) || 0;
+      const baseCost = distance * cost;
+      const optimizedCost = baseCost * 0.85; // 15% savings
+      if (chart) chart.destroy();
+      const ctx = document.getElementById('savingsChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Current', 'Optimized'],
+          datasets: [{
+            label: 'Cost',
+            data: [baseCost, optimizedCost],
+            backgroundColor: ['#ef4444', '#22c55e']
+          }]
+        }
+      });
+    }
+    function openSignup() {
+      document.getElementById('signupModal').classList.remove('hidden');
+    }
+    function closeSignup() {
+      document.getElementById('signupModal').classList.add('hidden');
+    }
+    function submitSignup() {
+      const email = document.getElementById('email').value;
+      if (email) {
+        localStorage.setItem('earlyAccessEmail', email);
+        alert('Thank you for signing up!');
+        closeSignup();
+      }
+    }
+  </script>
+</body>
 </html>
